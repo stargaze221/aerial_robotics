@@ -1,0 +1,109 @@
+FROM osrf/ros:melodic-desktop-full
+
+# Minimal setup
+RUN apt-get update \
+    && apt-get install -y locales lsb-release
+ARG DEBIAN_FRONTEND=noninteractive
+RUN dpkg-reconfigure locales
+
+
+# Install requirements
+RUN apt-get install -y ros-melodic-libmavconn \
+    ros-melodic-message-to-tf \
+    ros-melodic-mavros \
+    ros-melodic-mavros-msgs \
+    ros-melodic-apriltag \
+    ros-melodic-apriltag-ros \
+    libgstreamer-plugins-base1.0-dev \
+    python3-numpy \
+    python3-jinja2 \
+    python-pexpect \
+    python-pip
+
+RUN pip install \
+    mavproxy==1.8.49 \
+    monotonic
+
+# [MAVProxy Version: Verify you have mavproxy version 1.8.49 installed]
+RUN pip show mavproxy
+
+RUN /opt/ros/melodic/lib/mavros/install_geographiclib_datasets.sh
+
+
+## Setup and Build
+
+mkdir -p $HOME/aerial_robotics_ws/src
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# # Minimal setup
+# RUN apt-get update \
+#     && apt-get install -y locales lsb-release
+# ARG DEBIAN_FRONTEND=noninteractive
+# RUN dpkg-reconfigure locales
+
+# ################################
+# ### VINS software dependency ###
+# ################################
+
+# # Ceres Solver
+# # From http://ceres-solver.org/installation.html
+
+# # CMake
+# RUN sudo apt-get install cmake
+# # google-glog + gflags
+# RUN sudo apt-get install -y libgoogle-glog-dev libgflags-dev
+# # Use ATLAS for BLAS & LAPACK
+# RUN sudo apt-get install -y libatlas-base-dev
+# # Eigen3
+# RUN sudo apt-get install -y libeigen3-dev
+# # SuiteSparse (optional)
+# RUN sudo apt-get install -y libsuitesparse-dev
+
+
+# RUN sudo apt-get install -y cmake libgoogle-glog-dev libatlas-base-dev libsuitesparse-dev
+# RUN wget http://ceres-solver.org/ceres-solver-1.14.0.tar.gz
+# RUN tar zxf ceres-solver-1.14.0.tar.gz
+# RUN mkdir ceres-bin
+# RUN mkdir solver && cd ceres-bin
+# RUN cmake ../ceres-solver-1.14.0 -DEXPORT_BUILD_DIR=ON -DCMAKE_INSTALL_PREFIX="../solver" 
+
+# #good for build without being root privileged and at wanted directory
+    
+# RUN make -j3 # 6 : number of cores
+# # RUN make test # 1 failure out of 125 tests. So it is OK to move on.
+# RUN make install 
+# RUN bin/simple_bundle_adjuster ../ceres-solver-1.14.0/data/problem-16-22106-pre.txt # to check version
+
+
+# # # Install https://github.com/HKUST-Aerial-Robotics/VINS-Fusion
+# # RUN mkdir -p ~/catkin_ws/src
+# # RUN cd ~/catkin_ws/src
+# # RUN git clone https://github.com/HKUST-Aerial-Robotics/VINS-Fusion.git
+# # RUN /bin/bash -c '. /opt/ros/melodic/setup.bash; cd ~/catkin_ws; catkin_make'
+# # RUN echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+
+
+# # RUN source ~/catkin_ws/devel/setup.bash
+
+
+
+# # Source the catkin workspace
+# RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+# RUN echo "source /home/overlay_ws/devel/setup.bash" >> ~/.bashrc
+
+# WORKDIR /home/overlay_ws
